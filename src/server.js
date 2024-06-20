@@ -1,7 +1,9 @@
 const express = require("express")
 const app = express();
 
+
 app.use(express.json())
+
 
 app.get("/", (request, response, next) => {
 
@@ -9,6 +11,9 @@ app.get("/", (request, response, next) => {
         message: "Hello world!"
     })
 })
+
+const blogRouter = require("./controllers/BlogRouter")
+app.use("/blogs", blogRouter)
 
 app.get("*", (request, response, next) => {
     response.status(404).json({
