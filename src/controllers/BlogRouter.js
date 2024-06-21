@@ -2,6 +2,7 @@ const express = require("express");
 const { BlogModel } = require("../models/BlogModel");
 const router = express.Router();
 
+// Find all blogs - 
 router.get("/", async (request, response, next) => {
 
     let result = await BlogModel.find({}).exec();
