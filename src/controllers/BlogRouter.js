@@ -1,33 +1,90 @@
 const express = require("express");
-const { BlogModel } = require("../models/models");
 const router = express.Router();
+const {BlogModel} = require("../models/models")
 
-// Find all blogs - 
 router.get("/", async (request, response, next) => {
 
-    let result = await BlogModel.find({}).populate("author").exec();
-    response.json({
-        message: "Blog router homepage",
-        result: result
-    })
-})
+	let result = await BlogModel.find({}).populate("author").exec();
 
-router.get("/:id", (request, response, next) => {
-    response.json({
-        message: "Blog router page"
-    })
-})
+	response.json({
+		message:"Blog router homepage",
+		result: result
+	});
+});
 
-router.post("/", (request, response, next) => {
-    response.json({
-        message: "Blog router post"
-    })
-})
 
-router.delete("/", (request, response, next) => {
-    response.json({
-        message: "Blog router delete"
-    })
-})
+router.get("/findById/:id", async (request, response, next) => {
 
-module.exports = router
+	let result = await BlogModel.findById(request.params.id).populate("author").exec();
+
+	response.json({
+		message:"Blog router found page",
+		result: result
+	});
+});
+
+router.post("/findOneQuery", async (request, response, next) => {
+
+	let result = await BlogModel.findOne(request.body).populate("author").exec();
+
+	response.json({
+		message:"Blog router homepage",
+		result: result
+	});
+});
+
+router.post("/findManyQuery", async (request, response, next) => {
+
+	let result = await BlogModel.find(request.body).populate("author").exec();
+
+	response.json({
+		message:"Blog router homepage",
+		result: result
+	});
+});
+
+
+router.post("/", async (request, response, next) => {
+
+	let result = await BlogModel.create(request.body).catch(error => {
+		error.status = 400;
+		return error
+	});
+
+	if (result.errors) {
+		return next(result);
+	}
+
+	response.json({
+		message:"Blog router homepage",
+		result: result
+	});
+});
+
+router.patch("/findById/:id", async (request, response, next) => {
+
+	let result = await BlogModel.findByIdAndUpdate(
+		request.params.id, 
+		request.body,
+		{
+			returnDocument: "after"
+		}
+	);
+
+	response.json({
+		message:"Blog router homepage",
+		result: result
+	});
+});
+
+router.delete("/", async (request, response, next) => {
+
+	let result = await BlogModel.findByIdAndDelete(request.body.id);
+
+	response.json({
+		message:"Blog router homepage",
+		result: result
+	});
+});
+
+module.exports = router;

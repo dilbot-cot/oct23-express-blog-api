@@ -52,9 +52,11 @@ const blogSchema = mongoose.Schema({
         }],
         required: false
     },
-    commentsAsObj: {
+    // older comment style - easier to use comments below
+    /**    commentsAsObj: {
         type: [{userId: {type: mongoose.Schema.Types.ObjectId, ref: "User"}, content: {type: String}}]
     },
+     */
     comments: {
         type: [commentSchema],
         required: false

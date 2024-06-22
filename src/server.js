@@ -26,11 +26,11 @@ app.get("*", (request, response, next) => {
 
 // How to handle an error with a request
 app.use((error, request, response, next) => {
-    response.json({
-        message: "Error occured!",
-        error: error.message
-    })
-})
+	response.status(error.status || 500).json({
+		message: "Error occured!",
+		error: error.message
+	});
+});
 
 module.exports = {
     app

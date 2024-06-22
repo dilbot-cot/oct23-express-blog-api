@@ -1,0 +1,20 @@
+meta {
+  name: Blog POST route
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3000/blogs
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "new from the post route",
+    "content": "brand new!",
+    "author": "66761e3499f68f2f6f41692d",
+    "categories": "coding"
+  }
+}

@@ -1,0 +1,17 @@
+meta {
+  name: Blogs findOne POST route
+  type: http
+  seq: 7
+}
+
+post {
+  url: http://localhost:3000/blogs/findOneQuery/
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "First blog post!"
+  }
+}
