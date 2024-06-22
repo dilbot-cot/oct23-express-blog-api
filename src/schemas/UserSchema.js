@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema({
     username: {
         type: String,
         required: true,
-        unique: trusted
+        unique: true
     },
     viewHistory: {
         type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Blog"}],
