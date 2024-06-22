@@ -1,0 +1,17 @@
+meta {
+  name: Users POST route
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:3000/users
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "new user"
+  }
+}

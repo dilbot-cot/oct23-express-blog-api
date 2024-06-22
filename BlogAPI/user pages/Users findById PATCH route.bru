@@ -1,0 +1,17 @@
+meta {
+  name: Users findById PATCH route
+  type: http
+  seq: 5
+}
+
+patch {
+  url: http://localhost:3000/users/findById/667630f8ea077d0d19ff1959
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "username": "updated username"
+  }
+}

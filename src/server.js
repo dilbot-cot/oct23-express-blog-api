@@ -17,6 +17,11 @@ const blogRouter = require("./controllers/BlogRouter")
 // Uses the Blog Router script and allows GET POST and DELETE functions.
 app.use("/blogs", blogRouter)
 
+const userRouter = require("./controllers/UserRouter")
+// Users route localhost:3000/users
+// Uses the User Router script and allows GET POST and DELETE functions.
+app.use("/users", userRouter)
+
 // No route option, when a route that doesn't exist is requested
 app.get("*", (request, response, next) => {
     response.status(404).json({
