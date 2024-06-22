@@ -12,6 +12,7 @@
  */
 
 const mongoose = require("mongoose");
+const { commentSchema } = require("./CommentSchema");
 
 const blogSchema = mongoose.Schema({
     title: {
@@ -49,12 +50,17 @@ const blogSchema = mongoose.Schema({
             timestamp: Date
         }],
         required: false
+    },
+    commentsAsObj: {
+        type: [{userId: {type: mongoose.Schema.Types.ObjectId, ref: "User"}, content: {type: String}}]
+    },
+    comments: {
+        type: [commentSchema],
+        required: false
     }
 },
 {
     timestamps: true
 })
 
-const BlogModel = mongoose.model("Blog", blogSchema)
-
-module.exports = {BlogModel}
+module.exports = {blogSchema}

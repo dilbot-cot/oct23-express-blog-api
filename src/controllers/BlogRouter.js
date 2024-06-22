@@ -1,5 +1,5 @@
 const express = require("express");
-const { BlogModel } = require("../models/BlogModel");
+const { BlogModel } = require("../models/models");
 const router = express.Router();
 
 // Find all blogs - 
