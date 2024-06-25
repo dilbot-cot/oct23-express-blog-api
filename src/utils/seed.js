@@ -1,4 +1,5 @@
 const { UserModel, BlogModel } = require("../models/models");
+const { comparePasswords, createJWT, validateJwt } = require("./authHelpers");
 const { databaseConnect, databaseClear, databaseClose } = require("./database");
 
 
@@ -11,18 +12,18 @@ async function seedUsers() {
         {
             username: "pikachu",
             password: "pokemon"
+        },
+        {
+            username: "newUser",
+            password: "Order 66"
         }
     ];
 
-    let thirdUser = {
-        username: "newUser",
-        password: "Order 66"
-    }
+    let result = await Promise.all(userData.map(async (user) => {
+        let newUser = await UserModel.create(user);
+        return newUser;
+    }));
 
-    let newUser = await UserModel.create(thirdUser);
-    await newUser.save()
-
-    let result = await UserModel.insertMany(userData)
     console.log(result)
     return result
 }
@@ -65,6 +66,10 @@ async function seed() {
 
     let newUsers = await seedUsers();
     let newBlogs = await seedBlogPosts(newUsers);
+    let newJwt = createJWT(newUsers[0]._id);
+    console.log("New JWT: " + newJwt)
+
+    validateJwt(newJwt)
 
     console.log("Seeded the data!");
     await databaseClose();
