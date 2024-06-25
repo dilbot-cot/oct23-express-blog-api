@@ -5,12 +5,23 @@ const { databaseConnect, databaseClear, databaseClose } = require("./database");
 async function seedUsers() {
     let userData = [
         {
-            username: "dillon"
+            username: "dillon",
+            password: "password"
         },
         {
-            username: "pikachu"
+            username: "pikachu",
+            password: "pokemon"
         }
     ];
+
+    let thirdUser = {
+        username: "newUser",
+        password: "Order 66"
+    }
+
+    let newUser = await UserModel.create(thirdUser);
+    await newUser.save()
+
     let result = await UserModel.insertMany(userData)
     console.log(result)
     return result
