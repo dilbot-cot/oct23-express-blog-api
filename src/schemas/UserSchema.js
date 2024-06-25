@@ -4,6 +4,7 @@
  */
 
 const mongoose = require("mongoose")
+const bcrypt = require('bcryptjs')
 
 const userSchema = mongoose.Schema({
     username: {
@@ -34,6 +35,13 @@ userSchema.pre(
         }
         console.log("Pre-save hook running and password is modified")
 
+        console.log("Raw password is: " + this.password)
+
+        const hash = await bcrypt.hash(this.password, 10)
+
+        console.log("Hashed and encrypted and salted password is: " + hash)
+
+        this.password = hash
 
         next()
     }
