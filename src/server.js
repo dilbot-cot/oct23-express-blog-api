@@ -1,35 +1,40 @@
-const express = require("express")
+
+const express = require("express");
 const app = express();
+const cors = require("cors");
 
-// Allows JSON to be used in all routes
-app.use(express.json())
 
-// Homepage route localhost:3000/
+
+// Allows POST requests to have JSON body content
+app.use(express.json());
+
+app.use(cors());
+
 app.get("/", (request, response, next) => {
 
-    response.json({
-        message: "Hello world!"
-    })
-})
-
-const blogRouter = require("./controllers/BlogRouter")
-// Blogs route localhost:3000/blogs
-// Uses the Blog Router script and allows GET POST and DELETE functions.
-app.use("/blogs", blogRouter)
-
-const userRouter = require("./controllers/UserRouter")
-// Users route localhost:3000/users
-// Uses the User Router script and allows GET POST and DELETE functions.
-app.use("/users", userRouter)
-
-// No route option, when a route that doesn't exist is requested
-app.get("*", (request, response, next) => {
-    response.status(404).json({
-        message: "Page not found."
-    })
+	response.json({
+		message: "Hello world!"
+	});
 });
 
-// How to handle an error with a request
+
+
+const blogRouter = require("./controllers/BlogRouter.js");
+app.use("/blogs", blogRouter);
+
+
+const userRouter = require("./controllers/UserRouter.js");
+app.use("/users", userRouter);
+
+
+
+app.get("*", (request, response, next) => {
+	response.status(404).json({
+		message:"404 Page not found."
+	});
+});
+
+
 app.use((error, request, response, next) => {
 	response.status(error.status || 500).json({
 		message: "Error occured!",
@@ -37,6 +42,7 @@ app.use((error, request, response, next) => {
 	});
 });
 
+
 module.exports = {
-    app
+	app
 }

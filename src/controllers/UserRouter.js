@@ -1,6 +1,6 @@
 const express = require("express");
-const { UserModel } = require("../models/models"); // Need this imported somewhere in the server code to make the server connection use Users
-const {createJWT, comparePasswords} = require('../utils/authHelpers')
+const { UserModel } = require("../models/models");
+const { comparePasswords, createJwt, decodeJwt } = require("../utils/authHelpers");
 const router = express.Router();
 
 router.get("/", async (request, response, next) => {
@@ -47,12 +47,17 @@ router.post("/findManyQuery", async (request, response, next) => {
 
 router.post("/", async (request, response, next) => {
 
+	console.log("User signup body is:");
+	console.log(request.body);
+
 	let result = await UserModel.create(request.body).catch(error => {
 		error.status = 400;
+		console.log("Error on creating a user", error);
 		return error
 	});
 
 	let jwt = createJwt(result._id);
+	let decodedJwt = decodeJwt(jwt);
 
 	if (result.errors) {
 		return next(result);
@@ -61,7 +66,8 @@ router.post("/", async (request, response, next) => {
 	response.json({
 		message:"User router operation",
 		result: result,
-		jwt: jwt
+		jwt: jwt,
+		decodedJwt
 	});
 });
 
@@ -104,6 +110,8 @@ router.post("/jwt", async (request, response, next) => {
 	// Find user by username in DB
 	let foundUser = await UserModel.findOne({username: request.body.username}).exec();
 
+	console.log(request.body, foundUser);
+
 	// Compare request.body.password to foundUser.password using the compare function 
 	let isPasswordCorrect = await comparePasswords(request.body.password, foundUser.password);
 
@@ -111,7 +119,7 @@ router.post("/jwt", async (request, response, next) => {
 	// Create a JWT based on foundUser._id 
 	if (isPasswordCorrect){
 
-		newJwt = createJWT(foundUser._id)
+		newJwt = createJwt(foundUser._id);
 
 		response.json({
 			jwt: newJwt
