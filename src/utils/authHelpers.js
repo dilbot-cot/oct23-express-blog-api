@@ -5,9 +5,7 @@ dotenv.config()
 
 async function comparePasswords(plainTextPassword, encyptedPassword) {
     let doesPasswordMatch = false
-
     doesPasswordMatch = await bcrypt.compare(plainTextPassword, encyptedPassword)
-
     return doesPasswordMatch
 }
 
